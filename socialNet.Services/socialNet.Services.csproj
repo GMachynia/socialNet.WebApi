@@ -1,0 +1,21 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.1</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="AutoMapper" Version="10.1.1" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Proxies" Version="5.0.0" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="5.0.0" />
+    <PackageReference Include="NLog" Version="4.7.5" />
+    <PackageReference Include="NLog.Web.AspNetCore" Version="4.9.3" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\socialNet.Dtos\socialNet.Dtos.csproj" />
+    <ProjectReference Include="..\socialNet.Repsitories.Interfaces\socialNet.Repsitories.Interfaces.csproj" />
+    <ProjectReference Include="..\socialNet.Services.Interfaces\socialNet.Services.Interfaces.csproj" />
+  </ItemGroup>
+
+</Project>
