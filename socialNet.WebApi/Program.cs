@@ -21,7 +21,7 @@ using System;
                 NLog.LogManager.Shutdown();
             }
         
-          static IHostBuilder CreateHostBuilder(string[] args) =>
+         static IHostBuilder CreateHostBuilder(string[] args) =>
            Host.CreateDefaultBuilder(args)
                 .ConfigureLogging(logging =>
                 {
