@@ -1,21 +1,18 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using socialNet.Data.ModelBuilders;
+using socialNet.Data.TypeConfigurations;
 using socialNet.Data.Models;
-using System;
-using System.Collections.Generic;
-using System.Text;
-
 
 
 namespace socialNet.Data
 {
     public class AppDbContext: DbContext
     {
-        public AppDbContext(DbContextOptions options) : base(options){}
         public DbSet<User> Users { get; set; }
+        public AppDbContext(DbContextOptions options) : base(options){}
 
-        protected override void OnModelCreating(ModelBuilder modelBuilder){
-            modelBuilder.AddUserBuilder();
+        protected override void OnModelCreating(ModelBuilder modelBuilder){ 
+            new UserEntityTypeConfiguration().Configure(modelBuilder.Entity<User>());
+
         }
         
 

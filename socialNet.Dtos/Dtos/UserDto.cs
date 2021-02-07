@@ -4,11 +4,6 @@ using System.Text;
 
 namespace socialNet.Dtos
 {
-    public class UserDto
-    {
-        public int Id { get; set; }
-        public string FirstName { get; set; }
-        public string LastName { get; set; }
-        public string Username { get; set; }
-    }
+    public record UserDto(int Id, string FirstName, string LastName, string Username);
+
 }
