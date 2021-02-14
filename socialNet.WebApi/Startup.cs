@@ -7,6 +7,7 @@ using socialNet.Data;
 using System.Text;
 using socialNet.WebApi.Infrastructure.ConfigurationServices;
 using System.Reflection;
+using socialNet.SignalR.Hubs;
 
 namespace socialNet.WebApi
 {
@@ -28,6 +29,8 @@ namespace socialNet.WebApi
             services.Configure<AppSettings>(appSettingsSection);
 
             services.AddDbServices(Configuration);
+
+            services.AddSignalRServices();
 
             services.AddLogFiltersServices();
 
@@ -66,6 +69,8 @@ namespace socialNet.WebApi
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
+                endpoints.MapHub<ChatHub>("/chat");
+                endpoints.MapHub<NotificationHub>("/notification");
             });
             
         }
