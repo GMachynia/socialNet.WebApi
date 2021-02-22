@@ -16,6 +16,8 @@ namespace socialNet.WebApi.Infrastructure.ConfigurationServices
         {
             services.AddScoped<IUnitOfWork, UnitOfWork>();
             services.AddScoped<IUserService, UserService>();
+            services.AddScoped<IConnectionService, ConnectionService>();
+            services.AddScoped<IFriendshipService, FriendshipService>();
 
             return services;
         }

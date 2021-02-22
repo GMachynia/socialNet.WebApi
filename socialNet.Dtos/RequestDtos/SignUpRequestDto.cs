@@ -37,8 +37,8 @@ namespace socialNet.Dtos.RequestDtos
 
         [Display(Name = "DateOfBirth")]
         [Required(ErrorMessage = "The {0} field is mandatory.")]
-        public DateTimeOffset DateOfBirth { get; set; }
-
+        public DateTime DateOfBirth { get; set; }
+     
     }
 }
 

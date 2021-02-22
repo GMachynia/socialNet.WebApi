@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using socialNet.Data.Models;
+using socialNet.Dtos;
 using socialNet.Dtos.RequestDtos;
 
 namespace socialNet.Services.Mapping
@@ -10,6 +11,7 @@ namespace socialNet.Services.Mapping
         {
             CreateMap<SignUpRequestDto, User>();
             CreateMap<UpdateUserRequestDto, User>();
+            CreateMap<ConnectionDto, Connection>();
         }
     }
 }

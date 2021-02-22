@@ -9,6 +9,7 @@ namespace socialNet.Services.Mapping
         public EntitesToDtosMappingProfile()
         {
             CreateMap<User, UserDto>();
+            CreateMap<Connection, ConnectionDto>();
         }
     }
 }

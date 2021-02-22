@@ -50,7 +50,7 @@ namespace socialNet.WebAPI.Controllers.User
             {
                 Subject = new ClaimsIdentity(new Claim[]
                 {
-                    new Claim(ClaimTypes.Name, user.Id.ToString())
+                    new Claim(ClaimTypes.Name, user.UserId.ToString())
                 }),
                 Expires = DateTime.UtcNow.AddDays(1),
                 SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
@@ -60,7 +60,7 @@ namespace socialNet.WebAPI.Controllers.User
 
             return Ok(new
             {
-                Id = user.Id,
+                Id = user.UserId,
                 Username = user.Username,
                 FirstName = user.FirstName,
                 LastName = user.LastName,
@@ -84,7 +84,7 @@ namespace socialNet.WebAPI.Controllers.User
             }
         }
 
-        [HttpGet]
+        [HttpGet("getAll")]
         public async Task<IActionResult> GetAll()
         {
             var users = await _userService.GetAll();
@@ -115,8 +115,77 @@ namespace socialNet.WebAPI.Controllers.User
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(int id)
         {
-            await _userService.Delete(id);
-            return Ok();
+            try
+            {
+                await _userService.Delete(id);
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex);
+            }
+        }
+
+
+        [HttpGet("getUsersByUsernameString")]
+        public async Task<IActionResult> GetByUsernameString(string usernameString)
+        {
+            try
+            {
+                var users = await _userService.GetUsersByStringAsync(usernameString);
+                return Ok(users);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex);
+            }
+
+
+        }
+
+        [HttpGet("getAllUsersByUsernameString")]
+        public async Task<IActionResult> GetAllByUsernameString(string usernameString)
+        {
+            try
+            {
+                var users = await _userService.GetAllUsersByStringAsync(usernameString);
+                return Ok(users);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex);
+            }
+        }
+
+        [HttpGet("getUserProfile")]
+        public async Task<IActionResult> GetUserProfile(string username)
+        {
+            try
+            {
+                var user = await _userService.GetUserProfileAsync(username);
+                return Ok(user);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex);
+            }
+
+        }
+
+
+        [HttpGet("getMyProfile")]
+        public async Task<IActionResult> GetMyProfile()
+        {
+            try
+            {
+                var userId = int.Parse(HttpContext.User.Identity.Name);
+                var userProfile = await _userService.GetMyProfileAsync(userId);
+                return Ok(userProfile);
+            }
+            catch(Exception ex)
+            {
+                return BadRequest(ex);
+            }          
         }
 
     }

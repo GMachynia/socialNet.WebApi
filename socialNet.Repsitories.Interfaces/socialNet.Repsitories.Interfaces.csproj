@@ -13,6 +13,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\socialNet.Data\socialNet.Data.csproj" />
+    <ProjectReference Include="..\socialNet.Dtos\socialNet.Dtos.csproj" />
   </ItemGroup>
 
 </Project>

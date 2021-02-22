@@ -121,6 +121,39 @@ namespace socialNet.Services
 
             return true;
         }
+
+        public async Task<IEnumerable<string>> GetUsersByStringAsync(string usernameString)
+        {
+             return await _unitOfWork.Users.GetUsersByStringAsync(usernameString);
+        }
+
+        public async Task<IEnumerable<string>> GetAllUsersByStringAsync(string usernameString)
+        {
+            return await _unitOfWork.Users.GetAllUsersByStringAsync(usernameString);
+        }
+        public async Task<UserProfileDto> GetUserProfileAsync(string username)
+        {
+            return await _unitOfWork.Users.GetUserProfileAsync(username);
+        }
+
+        public async Task<MyProfileDto> GetMyProfileAsync(int userId)
+        {
+            var user = await _unitOfWork.Users.GetUserByIdAsync(userId);
+            var userProfileInfo = await _unitOfWork.Users.GetUserProfileAsync(user.Username);
+            var userInvitations = await _unitOfWork.Friendships.GetUserInvitations(user);
+
+            return await Task.FromResult(new MyProfileDto(
+                userProfileInfo.Username,
+                userProfileInfo.FirstName,
+                userProfileInfo.LastName,
+                userProfileInfo.City,
+                userProfileInfo.DateOfBirth,
+                userProfileInfo.ProfilePicture,
+                userInvitations
+                ));
+        }
+
+
     }
 }
 

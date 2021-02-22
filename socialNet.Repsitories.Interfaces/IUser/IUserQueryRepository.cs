@@ -1,4 +1,5 @@
 ﻿using socialNet.Data.Models;
+using socialNet.Dtos;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -12,7 +13,11 @@ namespace socialNet.Repsitories.Interfaces.IUser
 
         Task<User> GetUserByUsernameAsync(string username);
 
+        Task<IEnumerable<string>> GetUsersByStringAsync(string usernameString);
+
+        Task<IEnumerable<string>> GetAllUsersByStringAsync(string usernameString);
         Task<IEnumerable<User>> GetAllUsersAsync();
+        Task<UserProfileDto> GetUserProfileAsync(string username);
 
         Task<bool> UserNameIsTaken(string username);
     }

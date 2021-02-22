@@ -20,6 +20,11 @@ namespace socialNet.Services.Interfaces
         Task Update(UpdateUserRequestDto userDto);
 
         Task Delete(int id);
+
+        Task<IEnumerable<string>> GetUsersByStringAsync(string usernameString);
+        Task<IEnumerable<string>> GetAllUsersByStringAsync(string usernameString);
+        Task<UserProfileDto> GetUserProfileAsync(string username);
+        Task<MyProfileDto> GetMyProfileAsync(int userId);
     }
     
 }

@@ -30,11 +30,11 @@ namespace socialNet.WebApi
 
             services.AddDbServices(Configuration);
 
-            services.AddSignalRServices();
-
             services.AddLogFiltersServices();
 
             services.AddAuthenticationServices(key);
+
+            services.AddSignalRServices();
 
             services.AddAutoMapperServices();
 
@@ -52,6 +52,7 @@ namespace socialNet.WebApi
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
             app.UseCors("socialNet.Client");
+
             app.UseRequestLocalization();
 
             if (env.IsDevelopment())
@@ -59,7 +60,7 @@ namespace socialNet.WebApi
                 app.UseDeveloperExceptionPage();
                 app.UseSwagger();
                 app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "socialNet.WebApi v1"));
-                app.UseHttpsRedirection();
+               // app.UseHttpsRedirection();
             }
 
             app.UseRouting();
@@ -69,8 +70,8 @@ namespace socialNet.WebApi
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
-                endpoints.MapHub<ChatHub>("/chat");
-                endpoints.MapHub<NotificationHub>("/notification");
+                endpoints.MapHub<ChatHub>("/signalR/chat");
+                endpoints.MapHub<NotificationHub>("/signalR/notification");
             });
             
         }
