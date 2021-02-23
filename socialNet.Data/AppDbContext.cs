@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using socialNet.Data.TypeConfigurations;
 using socialNet.Data.Models;
-
+using System;
 
 namespace socialNet.Data
 {
@@ -13,6 +13,9 @@ namespace socialNet.Data
         public DbSet<Message> Messages { get; set; }
 
         public AppDbContext(DbContextOptions options) : base(options){}
+
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+            => optionsBuilder.LogTo(Console.WriteLine);
 
         protected override void OnModelCreating(ModelBuilder modelBuilder){ 
             new UserEntityTypeConfiguration().Configure(modelBuilder.Entity<User>());
