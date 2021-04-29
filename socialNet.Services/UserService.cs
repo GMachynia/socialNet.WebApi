@@ -147,12 +147,22 @@ namespace socialNet.Services
                 userProfileInfo.FirstName,
                 userProfileInfo.LastName,
                 userProfileInfo.City,
-                userProfileInfo.DateOfBirth,
                 userProfileInfo.ProfilePicture,
                 userInvitations
                 ));
         }
 
+        public async Task<bool> CheckUsernameAvailability(string username)
+        {
+            return await _unitOfWork.Users.UserNameIsTaken(username);
+        }
+
+        public async Task<bool> UpdateUser(int userId, string pathImage)
+        {
+            var user = await _unitOfWork.Users.GetUserByIdAsync(userId);
+            user.ProfilePicture = pathImage;
+            return await _unitOfWork.CommitAsync();
+        }
 
     }
 }

@@ -19,14 +19,11 @@ namespace socialNet.Data.TypeConfigurations
             builder
                 .Property(x => x.City).IsRequired().HasMaxLength(20);
             builder
-                .Property(x => x.DateOfBirth).IsRequired().HasColumnType("date");
-            builder
                 .Property(x => x.Email).IsRequired();
             builder
                 .Property(x => x.PasswordHash).IsRequired();
             builder
                 .Property(x => x.PasswordSalt).IsRequired();
-   
         }
     }
 }

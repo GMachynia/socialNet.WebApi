@@ -9,11 +9,11 @@ using System.Threading.Tasks;
 namespace socialNet.SignalR.Hubs
 {
     [Authorize(AuthenticationSchemes = "Bearer")]
-    public class ChatHub: Hub
+    public class SocialNetHub: Hub
     {
         private readonly IConnectionService _connectionService;
 
-        public ChatHub(IConnectionService connectionService) : base()
+        public SocialNetHub(IConnectionService connectionService) : base()
         {
             _connectionService = connectionService;
         }
@@ -57,7 +57,7 @@ namespace socialNet.SignalR.Hubs
         {
             var userId = Context.User.Identity.Name;
             var connectionId = Context.ConnectionId;
-            await this._connectionService.AddConnection(new ConnectionDto(Int32.Parse(userId), connectionId));
+            await _connectionService.AddConnection(new ConnectionDto(Int32.Parse(userId), connectionId));
             await Clients.All.SendAsync("UserConnected", Context.ConnectionId);
             await base.OnConnectedAsync();
         }

@@ -1,9 +1,9 @@
 ﻿using socialNet.Data;
 using socialNet.Repsitories.Interfaces.IComment;
 using socialNet.Repsitories.Interfaces.IConnection;
-using socialNet.Repsitories.Interfaces.IEmoticon;
 using socialNet.Repsitories.Interfaces.IFriendship;
 using socialNet.Repsitories.Interfaces.IMessage;
+using socialNet.Repsitories.Interfaces.INotification;
 using socialNet.Repsitories.Interfaces.IPost;
 using socialNet.Repsitories.Interfaces.IUnitOfWork;
 using socialNet.Repsitories.Interfaces.IUser;
@@ -18,9 +18,9 @@ namespace socialNet.Repositories.UnitOfWork
         private IMessageRepository _messages;
         private ICommentRepository _comments;
         private IConnectionRepository _connections;
-        private IEmoticonRepository _emoticons;
         private IFriendshipRepository _friendships;
         private IPostRepository _posts;
+        private INotificationRepository _notifications;
    
         public UnitOfWork(AppDbContext context)
         {
@@ -32,6 +32,13 @@ namespace socialNet.Repositories.UnitOfWork
             get
             {
                 return _users ??= new UserRepository(_context);
+            }
+        }
+        public INotificationRepository Notifications
+        {
+            get
+            {
+                return _notifications ??= new NotificationRepository(_context);
             }
         }
         public IMessageRepository Messages
@@ -55,13 +62,7 @@ namespace socialNet.Repositories.UnitOfWork
                 return _connections ??= new ConnectionRepository(_context);
             }
         }
-        public IEmoticonRepository Emoticons
-        {
-            get
-            {
-                return _emoticons ??= new EmoticonRepository(_context);
-            }
-        }
+ 
         public IFriendshipRepository Friendships
         {
             get

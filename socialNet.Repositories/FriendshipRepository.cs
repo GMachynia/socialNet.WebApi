@@ -22,6 +22,17 @@ namespace socialNet.Repositories
             || (x.User == friend && x.UserFriend == user && x.Status == FriendRequestStatus.Approved || x.Status == FriendRequestStatus.Approved));
         }
 
+        public async Task<IEnumerable<User>> GetFriends(User user)
+        {
+            var users1 = await _appDbContext.Friendships.Where(x => x.User == user && x.Status == FriendRequestStatus.Approved).Select(x=>x.UserFriend).ToListAsync();
+            var users2 = await _appDbContext.Friendships.Where(x => x.UserFriend == user && x.Status == FriendRequestStatus.Approved).Select(x => x.User).ToListAsync();
+            var allUsers = new List<User>(users1.Count + users2.Count + 1);
+            allUsers.AddRange(users1);
+            allUsers.AddRange(users2);
+            allUsers.Add(user);
+            return allUsers;
+        }
+
 
         public async Task<IEnumerable<UserInvitationDto>> GetUserInvitations(User user)
         {

@@ -1,8 +1,8 @@
 ﻿using socialNet.Repsitories.Interfaces.IComment;
 using socialNet.Repsitories.Interfaces.IConnection;
-using socialNet.Repsitories.Interfaces.IEmoticon;
 using socialNet.Repsitories.Interfaces.IFriendship;
 using socialNet.Repsitories.Interfaces.IMessage;
+using socialNet.Repsitories.Interfaces.INotification;
 using socialNet.Repsitories.Interfaces.IPost;
 using socialNet.Repsitories.Interfaces.IUser;
 using System;
@@ -18,9 +18,9 @@ namespace socialNet.Repsitories.Interfaces.IUnitOfWork
         IMessageRepository Messages { get; }
         ICommentRepository Comments { get; }
         IConnectionRepository Connections { get; }
-        IEmoticonRepository Emoticons { get; }
         IFriendshipRepository Friendships { get; }
         IPostRepository Posts { get; }
+        INotificationRepository Notifications { get; }
 
         void Commit();
         Task<bool> CommitAsync();

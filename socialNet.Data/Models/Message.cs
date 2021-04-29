@@ -8,7 +8,7 @@ namespace socialNet.Data.Models
     {
         public Message()
         {
-            SendDateTime = new DateTime();
+            SendDateTime = DateTime.UtcNow;
         }
 
         public int MessageId { get; set; }

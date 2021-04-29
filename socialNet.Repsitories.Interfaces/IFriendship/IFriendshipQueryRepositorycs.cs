@@ -12,5 +12,6 @@ namespace socialNet.Repsitories.Interfaces.IFriendship
         Task<bool> IsFriend(User user, User friend);
         Task<IEnumerable<UserInvitationDto>> GetUserInvitations(User user);
         Task<Friendship> GetFriendshipByUsers(User user, User userFriend);
+        Task<IEnumerable<User>> GetFriends(User user);
     }
 }

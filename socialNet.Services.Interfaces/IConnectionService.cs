@@ -1,4 +1,5 @@
-﻿using socialNet.Dtos;
+﻿using socialNet.Data.Models;
+using socialNet.Dtos;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -10,5 +11,7 @@ namespace socialNet.Services.Interfaces
     {
         Task<ConnectionDto> AddConnection(ConnectionDto connectionDto);
         Task<ConnectionDto> RemoveConnection(ConnectionDto connectionDto);
+        Task<IEnumerable<string>> GetFriendsConnectionId(int userId);
+        Task<string> GetPostOwnerConnectionId(int postId);
     }
 }

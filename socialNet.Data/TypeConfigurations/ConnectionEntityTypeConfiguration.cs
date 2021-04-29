@@ -14,9 +14,9 @@ namespace socialNet.Data.TypeConfigurations
             builder
                 .HasKey(x => x.ConnectionId);
             builder
-                  .HasOne(x => x.User)
-                  .WithMany(x => x.Connections)
-                  .HasForeignKey(x => x.UserId);
+            .HasOne(x => x.User)
+            .WithMany(x => x.Connections)
+            .HasForeignKey(x => x.UserId);
         }
     }
 }

@@ -2,15 +2,13 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace socialNet.Data.Models
+namespace socialNet.Dtos
 {
-    public class Comment
+    public class CommentDto
     {
-        public int CommentId { get; set; }
         public string Content { get; set; }
-        public virtual User CommentOwner { get; set; }
         public int CommentOwnerId { get; set; }
-        public virtual Post Post { get; set; }
         public int PostId { get; set; }
+        public string Username { get; set; }
     }
 }

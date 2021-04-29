@@ -53,7 +53,7 @@ namespace socialNet.Repositories
         public async Task<UserProfileDto> GetUserProfileAsync(string username)
         {
             return await _appDbContext.Users.Where(x => x.Username == username).Select(x =>
-             new UserProfileDto(x.Username, x.FirstName, x.LastName, x.City, x.DateOfBirth, x.ProfilePicture)).SingleOrDefaultAsync();      
+             new UserProfileDto(x.Username, x.FirstName, x.LastName, x.City, x.ProfilePicture)).SingleOrDefaultAsync();      
         }
 
         public async Task<bool> UserNameIsTaken(string userName)

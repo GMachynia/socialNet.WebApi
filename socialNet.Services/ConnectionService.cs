@@ -4,6 +4,7 @@ using socialNet.Repsitories.Interfaces.IUnitOfWork;
 using socialNet.Services.Interfaces;
 using System.Threading.Tasks;
 using socialNet.Data.Models;
+using System.Collections.Generic;
 
 namespace socialNet.Services
 {
@@ -24,7 +25,6 @@ namespace socialNet.Services
             await _unitOfWork.Connections.AddAsync(connection);
             await _unitOfWork.CommitAsync();
             return connectionDto;
-           
         }
 
         public async Task<ConnectionDto> RemoveConnection(ConnectionDto connectionDto)
@@ -33,7 +33,22 @@ namespace socialNet.Services
             _unitOfWork.Connections.Delete(connection);
             await _unitOfWork.CommitAsync();
             return connectionDto;
+        }
+
+        public async Task<IEnumerable<string>> GetFriendsConnectionId(int userId){
+            var user = await _unitOfWork.Users.GetUserByIdAsync(userId);
+            var users = await _unitOfWork.Friendships.GetFriends(user);
+            return await _unitOfWork.Connections.GetFriendsConnectionId(users);
+        }
+
+        public async Task<string> GetPostOwnerConnectionId (int postId)
+        {
+            var post = await _unitOfWork.Posts.GetPostById(postId);
+            var user = post.PostOwner;
+            var connection = await _unitOfWork.Connections.GetConnectionIdByUser(user);
+            return connection.ConnectionId;
 
         }
+
     }
 }

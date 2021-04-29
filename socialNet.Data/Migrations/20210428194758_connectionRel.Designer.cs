@@ -10,8 +10,8 @@ using socialNet.Data;
 namespace socialNet.Data.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20210216175509_message")]
-    partial class message
+    [Migration("20210428194758_connectionRel")]
+    partial class connectionRel
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -21,13 +21,50 @@ namespace socialNet.Data.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("ProductVersion", "5.0.0");
 
+            modelBuilder.Entity("NotificationUser", b =>
+                {
+                    b.Property<int>("NotificationsNotificationId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("UsersUserId")
+                        .HasColumnType("int");
+
+                    b.HasKey("NotificationsNotificationId", "UsersUserId");
+
+                    b.HasIndex("UsersUserId");
+
+                    b.ToTable("NotificationUser");
+                });
+
+            modelBuilder.Entity("socialNet.Data.Models.Comment", b =>
+                {
+                    b.Property<int>("CommentId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .UseIdentityColumn();
+
+                    b.Property<int>("CommentOwnerId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Content")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("PostId")
+                        .HasColumnType("int");
+
+                    b.HasKey("CommentId");
+
+                    b.HasIndex("CommentOwnerId");
+
+                    b.HasIndex("PostId");
+
+                    b.ToTable("Comments");
+                });
+
             modelBuilder.Entity("socialNet.Data.Models.Connection", b =>
                 {
                     b.Property<string>("ConnectionId")
                         .HasColumnType("nvarchar(450)");
-
-                    b.Property<bool>("Connected")
-                        .HasColumnType("bit");
 
                     b.Property<int>("UserId")
                         .HasColumnType("int");
@@ -88,6 +125,47 @@ namespace socialNet.Data.Migrations
                     b.ToTable("Messages");
                 });
 
+            modelBuilder.Entity("socialNet.Data.Models.Notification", b =>
+                {
+                    b.Property<int>("NotificationId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .UseIdentityColumn();
+
+                    b.Property<byte>("NotificationType")
+                        .HasColumnType("tinyint");
+
+                    b.HasKey("NotificationId");
+
+                    b.ToTable("Notifications");
+                });
+
+            modelBuilder.Entity("socialNet.Data.Models.Post", b =>
+                {
+                    b.Property<int>("PostId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .UseIdentityColumn();
+
+                    b.Property<string>("PostContent")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("PostDateTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("PostImage")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("PostOwnerId")
+                        .HasColumnType("int");
+
+                    b.HasKey("PostId");
+
+                    b.HasIndex("PostOwnerId");
+
+                    b.ToTable("Posts");
+                });
+
             modelBuilder.Entity("socialNet.Data.Models.User", b =>
                 {
                     b.Property<int>("UserId")
@@ -99,9 +177,6 @@ namespace socialNet.Data.Migrations
                         .IsRequired()
                         .HasMaxLength(20)
                         .HasColumnType("nvarchar(20)");
-
-                    b.Property<DateTime>("DateOfBirth")
-                        .HasColumnType("date");
 
                     b.Property<string>("Email")
                         .IsRequired()
@@ -125,8 +200,8 @@ namespace socialNet.Data.Migrations
                         .IsRequired()
                         .HasColumnType("varbinary(max)");
 
-                    b.Property<byte[]>("ProfilePicture")
-                        .HasColumnType("varbinary(max)");
+                    b.Property<string>("ProfilePicture")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Username")
                         .IsRequired()
@@ -136,6 +211,40 @@ namespace socialNet.Data.Migrations
                     b.HasKey("UserId");
 
                     b.ToTable("Users");
+                });
+
+            modelBuilder.Entity("NotificationUser", b =>
+                {
+                    b.HasOne("socialNet.Data.Models.Notification", null)
+                        .WithMany()
+                        .HasForeignKey("NotificationsNotificationId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("socialNet.Data.Models.User", null)
+                        .WithMany()
+                        .HasForeignKey("UsersUserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("socialNet.Data.Models.Comment", b =>
+                {
+                    b.HasOne("socialNet.Data.Models.User", "CommentOwner")
+                        .WithMany("Comments")
+                        .HasForeignKey("CommentOwnerId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("socialNet.Data.Models.Post", "Post")
+                        .WithMany("Comments")
+                        .HasForeignKey("PostId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("CommentOwner");
+
+                    b.Navigation("Post");
                 });
 
             modelBuilder.Entity("socialNet.Data.Models.Connection", b =>
@@ -187,11 +296,31 @@ namespace socialNet.Data.Migrations
                     b.Navigation("Sender");
                 });
 
+            modelBuilder.Entity("socialNet.Data.Models.Post", b =>
+                {
+                    b.HasOne("socialNet.Data.Models.User", "PostOwner")
+                        .WithMany("Posts")
+                        .HasForeignKey("PostOwnerId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("PostOwner");
+                });
+
+            modelBuilder.Entity("socialNet.Data.Models.Post", b =>
+                {
+                    b.Navigation("Comments");
+                });
+
             modelBuilder.Entity("socialNet.Data.Models.User", b =>
                 {
+                    b.Navigation("Comments");
+
                     b.Navigation("Connections");
 
                     b.Navigation("Friendships");
+
+                    b.Navigation("Posts");
 
                     b.Navigation("RecipientMessages");
 

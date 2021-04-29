@@ -13,4 +13,8 @@
     <PackageReference Include="NLog.Web.AspNetCore" Version="4.9.3" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\socialNet.Data\socialNet.Data.csproj" />
+  </ItemGroup>
+
 </Project>

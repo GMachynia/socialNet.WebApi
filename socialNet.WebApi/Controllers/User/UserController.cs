@@ -11,6 +11,8 @@ using socialNet.Services.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
+using System.IO;
+using System.Net.Http.Headers;
 using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
@@ -25,6 +27,7 @@ namespace socialNet.WebAPI.Controllers.User
         private readonly IUserService _userService;
         private readonly IConfiguration _configuration;
         private readonly IStringLocalizer<UserController> _localizer;
+
 
         public UserController(IUserService userService, IConfiguration Configuration, IStringLocalizer<UserController> localizer)
         {
@@ -171,6 +174,20 @@ namespace socialNet.WebAPI.Controllers.User
             }
 
         }
+        [AllowAnonymous]
+        [HttpGet("checkUsername")]
+        public async Task<IActionResult> CheckUsernameAvailability(string username)
+        {
+            try
+            {
+                var userExist = await _userService.CheckUsernameAvailability(username);
+                return Ok(userExist);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex);
+            }
+        }
 
 
         [HttpGet("getMyProfile")]
@@ -186,6 +203,39 @@ namespace socialNet.WebAPI.Controllers.User
             {
                 return BadRequest(ex);
             }          
+        }
+        
+        [HttpPatch("setUserProfileImage"), DisableRequestSizeLimit]
+        public async Task<IActionResult> setProfileImage()
+        {
+            try
+            {
+                var userId = int.Parse(HttpContext.User.Identity.Name);
+                var formCollection = await Request.ReadFormAsync();
+                var file = formCollection.Files.GetFile("image");
+                var folderName = Path.Combine("Resources", "Images");
+                var pathToSave = Path.Combine(Directory.GetCurrentDirectory(), folderName);
+                if (file != null && file.Length > 0)
+                {
+                    var fileName = ContentDispositionHeaderValue.Parse(file.ContentDisposition).FileName.Trim('"');
+                    var fullPath = Path.Combine(pathToSave, fileName);
+                    var dbPath = Path.Combine(folderName, fileName);
+                    using (var stream = new FileStream(fullPath, FileMode.Create))
+                    {
+                        file.CopyTo(stream);
+                    }
+                    await _userService.UpdateUser(userId, dbPath);
+                    return Ok(true);
+                }
+                else
+                {
+                    return BadRequest();
+                }
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"Internal server error: {ex}");
+            }
         }
 
     }

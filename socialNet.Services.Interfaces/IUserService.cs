@@ -25,6 +25,8 @@ namespace socialNet.Services.Interfaces
         Task<IEnumerable<string>> GetAllUsersByStringAsync(string usernameString);
         Task<UserProfileDto> GetUserProfileAsync(string username);
         Task<MyProfileDto> GetMyProfileAsync(int userId);
+        Task<bool> CheckUsernameAvailability(string username);
+        Task<bool> UpdateUser(int userId, string pathImage);
     }
     
 }

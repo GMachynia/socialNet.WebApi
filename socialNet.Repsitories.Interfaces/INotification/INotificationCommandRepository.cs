@@ -4,9 +4,9 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace socialNet.Repsitories.Interfaces.IEmoticon
+namespace socialNet.Repsitories.Interfaces.INotification
 {
-    public interface IEmoticonCommandRepository: IRepository<Emoticon>
+    public interface INotificationCommandRepository: IRepository<Notification>
     {
     }
 }

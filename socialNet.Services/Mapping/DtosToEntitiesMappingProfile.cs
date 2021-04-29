@@ -12,6 +12,8 @@ namespace socialNet.Services.Mapping
             CreateMap<SignUpRequestDto, User>();
             CreateMap<UpdateUserRequestDto, User>();
             CreateMap<ConnectionDto, Connection>();
+            CreateMap<NewPostRequestDto, Post>();
+            CreateMap<CommentDto, Comment>();
         }
     }
 }

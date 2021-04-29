@@ -8,16 +8,15 @@ namespace socialNet.Data.Models
     {
         public Post()
         {
-            Emoticons = new List<Emoticon>();
             Comments = new List<Comment>();
-            PostDateTime = new DateTime();
+            PostDateTime = DateTime.UtcNow;
         }
         public int PostId { get; set; }
-        public virtual ICollection<Emoticon> Emoticons { get; set; }
         public virtual ICollection<Comment> Comments { get; set; }
         public virtual User PostOwner { get; set; }
         public int PostOwnerId { get; set; }
-        public byte[] Image { get; set; }
+        public string PostImage { get; set; }
+        public string PostContent { get; set; }
         public DateTime PostDateTime { get; set; }
 
 

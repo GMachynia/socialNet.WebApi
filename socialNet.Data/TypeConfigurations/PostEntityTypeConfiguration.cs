@@ -11,7 +11,8 @@ namespace socialNet.Data.TypeConfigurations
     {
         public void Configure(EntityTypeBuilder<Post> builder)
         {
-
+            builder
+                .HasKey(x => x.PostId);
         }
     }
 }

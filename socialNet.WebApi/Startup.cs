@@ -8,6 +8,10 @@ using System.Text;
 using socialNet.WebApi.Infrastructure.ConfigurationServices;
 using System.Reflection;
 using socialNet.SignalR.Hubs;
+using Microsoft.AspNetCore.Http.Features;
+using Microsoft.Extensions.FileProviders;
+using Microsoft.AspNetCore.Http;
+using System.IO;
 
 namespace socialNet.WebApi
 {
@@ -27,6 +31,12 @@ namespace socialNet.WebApi
             var key = Encoding.ASCII.GetBytes(appSettings.JWTSecret);
 
             services.Configure<AppSettings>(appSettingsSection);
+
+            services.Configure<FormOptions>(o => {
+                o.ValueLengthLimit = int.MaxValue;
+                o.MultipartBodyLengthLimit = int.MaxValue;
+                o.MemoryBufferThreshold = int.MaxValue;
+            });
 
             services.AddDbServices(Configuration);
 
@@ -53,6 +63,13 @@ namespace socialNet.WebApi
         {
             app.UseCors("socialNet.Client");
 
+            app.UseStaticFiles();
+            app.UseStaticFiles(new StaticFileOptions()
+            {
+                FileProvider = new PhysicalFileProvider(Path.Combine(Directory.GetCurrentDirectory(), @"Resources")),
+                RequestPath = new PathString("/Resources")
+            });
+
             app.UseRequestLocalization();
 
             if (env.IsDevelopment())
@@ -70,8 +87,7 @@ namespace socialNet.WebApi
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
-                endpoints.MapHub<ChatHub>("/signalR/chat");
-                endpoints.MapHub<NotificationHub>("/signalR/notification");
+                endpoints.MapHub<SocialNetHub>("/signalR/socialNetHub");
             });
             
         }

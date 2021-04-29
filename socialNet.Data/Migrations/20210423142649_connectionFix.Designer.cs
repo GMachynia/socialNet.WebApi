@@ -3,36 +3,23 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using socialNet.Data;
 
 namespace socialNet.Data.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20210423142649_connectionFix")]
+    partial class connectionFix
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
                 .UseIdentityColumns()
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("ProductVersion", "5.0.0");
-
-            modelBuilder.Entity("NotificationUser", b =>
-                {
-                    b.Property<int>("NotificationsNotificationId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("UsersUserId")
-                        .HasColumnType("int");
-
-                    b.HasKey("NotificationsNotificationId", "UsersUserId");
-
-                    b.HasIndex("UsersUserId");
-
-                    b.ToTable("NotificationUser");
-                });
 
             modelBuilder.Entity("socialNet.Data.Models.Comment", b =>
                 {
@@ -69,7 +56,8 @@ namespace socialNet.Data.Migrations
 
                     b.HasKey("ConnectionId");
 
-                    b.HasIndex("UserId");
+                    b.HasIndex("UserId")
+                        .IsUnique();
 
                     b.ToTable("Connections");
                 });
@@ -121,21 +109,6 @@ namespace socialNet.Data.Migrations
                     b.HasIndex("SenderId");
 
                     b.ToTable("Messages");
-                });
-
-            modelBuilder.Entity("socialNet.Data.Models.Notification", b =>
-                {
-                    b.Property<int>("NotificationId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .UseIdentityColumn();
-
-                    b.Property<byte>("NotificationType")
-                        .HasColumnType("tinyint");
-
-                    b.HasKey("NotificationId");
-
-                    b.ToTable("Notifications");
                 });
 
             modelBuilder.Entity("socialNet.Data.Models.Post", b =>
@@ -198,8 +171,8 @@ namespace socialNet.Data.Migrations
                         .IsRequired()
                         .HasColumnType("varbinary(max)");
 
-                    b.Property<string>("ProfilePicture")
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<byte[]>("ProfilePicture")
+                        .HasColumnType("varbinary(max)");
 
                     b.Property<string>("Username")
                         .IsRequired()
@@ -209,21 +182,6 @@ namespace socialNet.Data.Migrations
                     b.HasKey("UserId");
 
                     b.ToTable("Users");
-                });
-
-            modelBuilder.Entity("NotificationUser", b =>
-                {
-                    b.HasOne("socialNet.Data.Models.Notification", null)
-                        .WithMany()
-                        .HasForeignKey("NotificationsNotificationId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("socialNet.Data.Models.User", null)
-                        .WithMany()
-                        .HasForeignKey("UsersUserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
                 });
 
             modelBuilder.Entity("socialNet.Data.Models.Comment", b =>
@@ -248,8 +206,8 @@ namespace socialNet.Data.Migrations
             modelBuilder.Entity("socialNet.Data.Models.Connection", b =>
                 {
                     b.HasOne("socialNet.Data.Models.User", "User")
-                        .WithMany("Connections")
-                        .HasForeignKey("UserId")
+                        .WithOne("Connection")
+                        .HasForeignKey("socialNet.Data.Models.Connection", "UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -314,7 +272,7 @@ namespace socialNet.Data.Migrations
                 {
                     b.Navigation("Comments");
 
-                    b.Navigation("Connections");
+                    b.Navigation("Connection");
 
                     b.Navigation("Friendships");
 

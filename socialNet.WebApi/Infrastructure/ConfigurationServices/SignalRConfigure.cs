@@ -10,8 +10,9 @@ namespace socialNet.WebApi.Infrastructure.ConfigurationServices
     {
         public static IServiceCollection AddSignalRServices(this IServiceCollection services)
         {
-            services.AddSignalR();
-
+            services.AddSignalR(e => {
+                e.MaximumReceiveMessageSize = 102400000;
+            });
             return services;
         }
     }
