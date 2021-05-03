@@ -40,15 +40,13 @@ namespace socialNet.Services
             var users = await _unitOfWork.Friendships.GetFriends(user);
             return await _unitOfWork.Connections.GetFriendsConnectionId(users);
         }
-
-        public async Task<string> GetPostOwnerConnectionId (int postId)
+        public async Task<IEnumerable<string>> GetPostOwnerConnectionIds(int postId)
         {
             var post = await _unitOfWork.Posts.GetPostById(postId);
             var user = post.PostOwner;
-            var connection = await _unitOfWork.Connections.GetConnectionIdByUser(user);
-            return connection.ConnectionId;
-
+            return await _unitOfWork.Connections.GetConnectionIdsByUser(user);
         }
+
 
     }
 }

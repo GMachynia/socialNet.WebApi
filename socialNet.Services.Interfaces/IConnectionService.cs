@@ -12,6 +12,6 @@ namespace socialNet.Services.Interfaces
         Task<ConnectionDto> AddConnection(ConnectionDto connectionDto);
         Task<ConnectionDto> RemoveConnection(ConnectionDto connectionDto);
         Task<IEnumerable<string>> GetFriendsConnectionId(int userId);
-        Task<string> GetPostOwnerConnectionId(int postId);
+        Task<IEnumerable<string>> GetPostOwnerConnectionIds(int postId);
     }
 }

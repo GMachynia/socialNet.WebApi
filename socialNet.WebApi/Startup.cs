@@ -38,6 +38,10 @@ namespace socialNet.WebApi
                 o.MemoryBufferThreshold = int.MaxValue;
             });
 
+            services.AddControllers()
+                .AddNewtonsoftJson(options =>
+                     options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore);
+
             services.AddDbServices(Configuration);
 
             services.AddLogFiltersServices();
@@ -49,8 +53,6 @@ namespace socialNet.WebApi
             services.AddAutoMapperServices();
 
             services.AddDIServices();
-
-            services.AddControllers();
 
             services.AddLocalizationServices();
 

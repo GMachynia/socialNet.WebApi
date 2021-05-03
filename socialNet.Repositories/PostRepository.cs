@@ -19,6 +19,7 @@ namespace socialNet.Repositories
             return await _appDbContext.Posts
                 .Include(x => x.PostOwner)
                 .Include(x => x.Comments)
+                .ThenInclude(x => x.CommentOwner)
                 .Where(x => friendshipUsers.Contains(x.PostOwner))
                 .OrderByDescending(x => x.PostDateTime.Day)
                 .ThenByDescending(x => x.PostDateTime.TimeOfDay)
@@ -29,7 +30,11 @@ namespace socialNet.Repositories
                     x.PostContent,
                     x.PostImage,
                     x.PostDateTime.ToUniversalTime(),
-                    x.Comments
+                    x.Comments.Select(y => new PostCommentDto
+                    {
+                        Content = y.Content,
+                        CommentOwner = y.CommentOwner.Username
+                    })
                     ))
                     .Skip((page - 1) * pageSize)
                      .Take(pageSize)

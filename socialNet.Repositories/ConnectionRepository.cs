@@ -27,9 +27,9 @@ namespace socialNet.Repositories
             return await _appDbContext.Connections.Where(x => users.Contains(x.User)).Select(x => x.ConnectionId).ToListAsync();
         }
 
-        public async Task<Connection> GetConnectionIdByUser(User user)
+        public async Task<IEnumerable<string>> GetConnectionIdsByUser(User user)
         {
-            return await _appDbContext.Connections.SingleOrDefaultAsync(x => x.User == user);
+            return await _appDbContext.Connections.Where(x => x.User == user).Select(x => x.ConnectionId).ToListAsync();
         }
 
     }

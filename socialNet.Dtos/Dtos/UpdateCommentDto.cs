@@ -4,10 +4,9 @@ using System.Text;
 
 namespace socialNet.Dtos
 {
-    public class UpdateCommentDto
+    public class PostCommentDto
     {
         public string Content { get; set; }
-        public int PostId { get; set; }
-        public string Username { get; set; }
+        public string CommentOwner { get; set; }
     }
 }

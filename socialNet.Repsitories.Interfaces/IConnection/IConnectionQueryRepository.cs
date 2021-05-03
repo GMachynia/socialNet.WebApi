@@ -9,6 +9,6 @@ namespace socialNet.Repsitories.Interfaces.IConnection
     public interface IConnectionQueryRepository
     {
         Task<IEnumerable<string>> GetFriendsConnectionId(IEnumerable<User> users);
-        Task<Connection> GetConnectionIdByUser(User user);
+        Task<IEnumerable<string>> GetConnectionIdsByUser(User user);
     }
 }
